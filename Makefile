@@ -123,6 +123,9 @@ java_chapters: split_chapters
 	$(call run_generate_ast,chap13_inheritance)
 	@ $(MAKE) -f util/java.make DIR=gen/chap13_inheritance PACKAGE=lox
 
+java_chap05:
+	@ $(MAKE) -f util/java.make DIR=gen/chap05_representing PACKAGE=lox
+
 c_chapters: split_chapters
 	@ $(MAKE) -f util/c.make NAME=chap14_chunks MODE=release SOURCE_DIR=gen/chap14_chunks
 	@ $(MAKE) -f util/c.make NAME=chap15_virtual MODE=release SOURCE_DIR=gen/chap15_virtual
@@ -203,4 +206,5 @@ xml: $(TOOL_SOURCES)
 	@ dart --enable-asserts tool/bin/build_xml.dart
 
 .PHONY: book c_chapters clean clox compile_snippets debug default diffs \
-	get java_chapters jlox serve split_chapters test test_all test_c test_java
+	get java_chapters jlox serve split_chapters test test_all test_c test_java \
+	java_chap05

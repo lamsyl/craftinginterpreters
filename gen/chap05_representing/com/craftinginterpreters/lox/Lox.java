@@ -11,14 +11,29 @@ import java.util.List;
 public class Lox {
   static boolean hadError = false;
   public static void main(String[] args) throws IOException {
-    if (args.length > 1) {
-      System.out.println("Usage: jlox [script]");
-      System.exit(64); // [64]
-    } else if (args.length == 1) {
-      runFile(args[0]);
-    } else {
-      runPrompt();
-    }
+    Token plus = new Token(TokenType.PLUS, "+", null, 0);
+    Token minus = new Token(TokenType.MINUS, "-", null, 0);
+    Token times = new Token(TokenType.STAR, "*", null, 0);
+    Expr ast = new Expr.Binary(
+            new Expr.Grouping(
+                new Expr.Binary(
+                  new Expr.Literal(1),
+                  plus,
+                  new Expr.Literal(2)
+                )
+            ),
+            times,
+            new Expr.Grouping(
+                new Expr.Binary(
+                    new Expr.Literal(4),
+                    minus,
+                    new Expr.Literal(3)
+                )
+            )
+    );
+    RpnVisitor rpnVisitor = new RpnVisitor();
+    List<String> rpnLexemes = ast.accept(rpnVisitor);
+    System.out.println(String.join(" ", rpnLexemes));
   }
   private static void runFile(String path) throws IOException {
     byte[] bytes = Files.readAllBytes(Paths.get(path));
